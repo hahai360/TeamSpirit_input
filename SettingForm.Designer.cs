@@ -332,6 +332,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(305, 396);
+            this.ControlBox = false;
             this.Controls.Add(this.browserLabel);
             this.Controls.Add(this.browserComb);
             this.Controls.Add(this.workGroup);
@@ -343,6 +344,7 @@
             this.MinimizeBox = false;
             this.Name = "SettingForm";
             this.Text = "設定お願いしますm(_ _)m";
+            this.Load += new System.EventHandler(this.SettingForm_Load);
             this.authGroup.ResumeLayout(false);
             this.authGroup.PerformLayout();
             this.workGroup.ResumeLayout(false);

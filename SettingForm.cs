@@ -183,7 +183,7 @@ namespace TeamSprit_input
             // 休憩２開始・終了
             setValues.isData &= CheckText(restStartTime2Text, restEndTime2Text, CheckType.Date);
 
-            if (! setValues.isData)
+            if (!setValues.isData)
             {
                 MessageBox.Show("赤色になっている部分を修正してください");
                 return;
@@ -258,14 +258,14 @@ namespace TeamSprit_input
             }
 
             switch (type)
-            {
+        {
                 case CheckType.Date:
                     errFlag &= TimeTextFormatCheng(textBox1) & TimeTextFormatCheng(textBox2);
                     break;
                 default:
                     break;
             }
-
+            
             return errFlag;
         }
     }
