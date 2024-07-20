@@ -8,20 +8,27 @@ namespace TeamSprit_input
 {
     public partial class SettingForm : Form
     {
+        #region 定数
         // 正規表現定義関連
         private const String timeFormatCheckRegexp = "^[0-9]{1,2}:[0-5][0-9]";                    // 99:59 or 9:59
         private const String timeNumberCheckRegexp = "^([0-9]{2}[0-5][0-9]|[0-9][0-5][0-9])$";    // 9959 or 959
+        #endregion 定数
 
+        #region enum
         // チェック項目
         private enum CheckType
         {
             Text,       // テキストとしてチェックする
             Date        // 日付としてチェックする
         }
+        #endregion enum
 
+        #region メンバー
         // 設定情報
         public Settings setValues = new Settings();
-        
+        #endregion メンバー
+
+        #region コンストラクタ
         public SettingForm(bool isStart, Settings setting)
         {
             InitializeComponent();
@@ -43,58 +50,28 @@ namespace TeamSprit_input
             if (isStart)
             {
                 backButton.Visible = false;
-                return;
             }
-
-            // 設定をコピーする
-            setValues = setting.Clone();
-
-            // 設定を画面に表示する
-            userText.Text               = setValues.userName;
-            passText.Text               = setValues.password;
-            startTimeText.Text          = setValues.startTime;
-            endTimeText.Text            = setValues.endTime;
-            restStartTime1Text.Text     = setValues.startRest1;
-            restEndTime1Text.Text       = setValues.endRest1;
-            restStartTime2Text.Text     = setValues.startRest2;
-            restEndTime2Text.Text       = setValues.endRest2;
-            workPlaceComb.SelectedValue = setValues.workPlace;
-            browserComb.SelectedValue   = (int) setValues.browserType;
-        }
-
-        private void InitDateComb()
-        {
-            // ブラウザ選択用コンボボックス設定
+            else
             {
-                browserComb.DataSource    = Settings.BrowserData();     // データテーブル表示する設定
-                browserComb.ValueMember   = "Code";                     // コード
-                browserComb.DisplayMember = "Name";                     // 表示名
-                browserComb.SelectedIndex = 0;                          // 初期値設定
-            }
-            // 勤務場所選択用コンボボックス設定
-            {
-                // 勤務データ
-                DataTable dt = new DataTable();
-                dt.Columns.Add("Code", typeof(String));     // コード
-                dt.Columns.Add("Name", typeof(String));     // 表示名
+                // 設定をコピーする
+                setValues = setting.Clone();
 
-                // データ作成(変更があるたびに修正が必要になるので修正しないようにしたい)
-                dt.Rows.Add("", "");
-                dt.Rows.Add("a2210000005Lyp8AAC", "派遣先勤務");
-                dt.Rows.Add("a2210000005LypDAAS", "在宅勤務");
-                dt.Rows.Add("a2210000005LypIAAS", "本社・支店勤務");
-
-                // 変更をコミット
-                dt.AcceptChanges();
-
-                // コンボボックス設定
-                workPlaceComb.DataSource    = dt;           // データテーブル表示する設定
-                workPlaceComb.ValueMember   = "Code";       // コード
-                workPlaceComb.DisplayMember = "Name";       // 表示名
-                workPlaceComb.SelectedIndex = 0;            // 初期値設定
+                // 設定を画面に表示する
+                userText.Text               = setValues.userName;
+                passText.Text               = setValues.password;
+                startTimeText.Text          = setValues.startTime;
+                endTimeText.Text            = setValues.endTime;
+                restStartTime1Text.Text     = setValues.startRest1;
+                restEndTime1Text.Text       = setValues.endRest1;
+                restStartTime2Text.Text     = setValues.startRest2;
+                restEndTime2Text.Text       = setValues.endRest2;
+                workPlaceComb.SelectedValue = setValues.workPlace;
+                browserComb.SelectedValue   = (int)setValues.browserType;
             }
         }
+        #endregion コンストラクタ
 
+        #region イベント
         /// <summary>
         /// 戻るボタン(フォームを閉じる)
         /// </summary>
@@ -105,48 +82,11 @@ namespace TeamSprit_input
             this.Close();
         }
 
-        private bool TimeTextFormatCheng(TextBox tb)
-        {
-            // テキストボックスの背景を戻す。
-            tb.BackColor = Color.White;
-
-            // 空白
-            if(tb.Text == "")
-            {
-                return true;
-            }
-            
-            // 形式チェック(99:59 or 9:59)
-            else if (Regex.IsMatch(tb.Text, timeFormatCheckRegexp))
-            {
-                tb.Text = tb.Text.Replace(":", "");
-                // 文字列→数字変換
-                int result = 0;
-                if (int.TryParse(tb.Text, out result))
-                {
-                    // 時間形式に修正
-                    tb.Text = result.ToString("00:00");
-                    return true;
-                }
-            }
-            // 形式チェック(9959 or 959)
-            else if (Regex.IsMatch(tb.Text, timeNumberCheckRegexp))
-            {
-                // 文字列→数字変換
-                int result = 0;
-                if (int.TryParse(tb.Text, out result)) {
-                    // 時間形式に修正
-                    tb.Text = result.ToString("00:00");
-                    return true;
-                }
-            }
-
-            // エラーとなったテクストボックスの色を変更する。
-            tb.BackColor = Color.Red;
-            
-            return false;
-        }
-
+        /// <summary>
+        /// テキストボックスからカーソルが離れた場合
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TextBox_Leave(object sender, EventArgs e)
         {
             TimeTextFormatCheng((TextBox)sender);
@@ -183,8 +123,10 @@ namespace TeamSprit_input
             // 休憩２開始・終了
             setValues.isData &= CheckText(restStartTime2Text, restEndTime2Text, CheckType.Date);
 
+            // エラーが発生している場合
             if (!setValues.isData)
             {
+                // メッセージを表示し、保存処理を中断する
                 MessageBox.Show("赤色になっている部分を修正してください");
                 return;
             }
@@ -215,7 +157,7 @@ namespace TeamSprit_input
             // ブラウザ
             int browser;
             int.TryParse(browserComb.SelectedValue.ToString(), out browser);
-            setValues.browserType = (Settings.BrowserType) browser;
+            setValues.browserType = (Settings.BrowserType)browser;
 
             // 保存
             setValues.Save();
@@ -223,7 +165,50 @@ namespace TeamSprit_input
             // フォームを閉じる
             this.Close();
         }
+        #endregion イベント
 
+        #region コンボボックス初期化
+        private void InitDateComb()
+        {
+            // ブラウザ選択用コンボボックス設定
+            {
+                browserComb.DataSource    = Settings.BrowserData();     // データテーブル表示する設定
+                browserComb.ValueMember   = "Code";                     // コード
+                browserComb.DisplayMember = "Name";                     // 表示名
+                browserComb.SelectedIndex = 0;                          // 初期値設定
+            }
+            // 勤務場所選択用コンボボックス設定
+            {
+                // 勤務データ
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Code", typeof(String));     // コード
+                dt.Columns.Add("Name", typeof(String));     // 表示名
+
+                // データ作成(変更があるたびに修正が必要になるので修正しないようにしたい)
+                dt.Rows.Add("", "");
+                dt.Rows.Add("a2210000005Lyp8AAC", "派遣先勤務");
+                dt.Rows.Add("a2210000005LypDAAS", "在宅勤務");
+                dt.Rows.Add("a2210000005LypIAAS", "本社・支店勤務");
+
+                // 変更をコミット
+                dt.AcceptChanges();
+
+                // コンボボックス設定
+                workPlaceComb.DataSource    = dt;           // データテーブル表示する設定
+                workPlaceComb.ValueMember   = "Code";       // コード
+                workPlaceComb.DisplayMember = "Name";       // 表示名
+                workPlaceComb.SelectedIndex = 0;            // 初期値設定
+            }
+        }
+        #endregion コンボボックス初期化
+
+        #region テキストボックスの値チェック処理関連
+        /// <summary>
+        /// 入力必須チェック
+        /// </summary>
+        /// <param name="textBox1"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         private bool CheckText(TextBox textBox1, CheckType type = CheckType.Text)
         {
             bool errFlag = true;
@@ -246,6 +231,13 @@ namespace TeamSprit_input
             return errFlag;
         }
 
+        /// <summary>
+        /// 入力チェック
+        /// </summary>
+        /// <param name="textBox1"></param>
+        /// <param name="textBox2"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         private bool CheckText(TextBox textBox1, TextBox textBox2, CheckType type = CheckType.Text)
         {
             bool errFlag = true;
@@ -268,5 +260,54 @@ namespace TeamSprit_input
             
             return errFlag;
         }
+
+        /// <summary>
+        /// 時間形式チェック
+        /// </summary>
+        /// <param name="tb"></param>
+        /// <returns></returns>
+        private bool TimeTextFormatCheng(TextBox tb)
+        {
+            // テキストボックスの背景を戻す。
+            tb.BackColor = Color.White;
+
+            // 空白
+            if (tb.Text == "")
+            {
+                return true;
+            }
+
+            // 形式チェック(99:59 or 9:59)
+            else if (Regex.IsMatch(tb.Text, timeFormatCheckRegexp))
+            {
+                tb.Text = tb.Text.Replace(":", "");
+                // 文字列→数字変換
+                int result = 0;
+                if (int.TryParse(tb.Text, out result))
+                {
+                    // 時間形式に修正
+                    tb.Text = result.ToString("00:00");
+                    return true;
+                }
+            }
+            // 形式チェック(9959 or 959)
+            else if (Regex.IsMatch(tb.Text, timeNumberCheckRegexp))
+            {
+                // 文字列→数字変換
+                int result = 0;
+                if (int.TryParse(tb.Text, out result))
+                {
+                    // 時間形式に修正
+                    tb.Text = result.ToString("00:00");
+                    return true;
+                }
+            }
+
+            // エラーとなったテクストボックスの色を変更する。
+            tb.BackColor = Color.Red;
+
+            return false;
+        }
+        #endregion テキストボックスの値チェック処理関連
     }
 }
