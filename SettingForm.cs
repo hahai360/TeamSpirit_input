@@ -51,6 +51,7 @@ namespace TeamSprit_input
             {
                 backButton.Visible = false;
             }
+            // 初期起動でない場合(設定データが存在する場合)
             else
             {
                 // 設定をコピーする
@@ -83,22 +84,15 @@ namespace TeamSprit_input
         }
 
         /// <summary>
-        /// テキストボックスからカーソルが離れた場合
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TextBox_Leave(object sender, EventArgs e)
-        {
-            TimeTextFormatCheng((TextBox)sender);
-        }
-
-        /// <summary>
         /// 保存ボタン押下
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SaveButton_Click(object sender, EventArgs e)
         {
+            // ----------------------------------------------------------------
+            // -- エラー表示リセット処理
+            // ----------------------------------------------------------------
             // テキストボックスのバックカラーを白に変更
             userText.BackColor           = Color.White;
             passText.BackColor           = Color.White;
@@ -112,6 +106,9 @@ namespace TeamSprit_input
             // データ登録済みフラグを立てる
             setValues.isData = true;
 
+            // ----------------------------------------------------------------
+            // -- データチェック処理
+            // ----------------------------------------------------------------
             // ユーザ名
             setValues.isData &= CheckText(userText);
             // パスワード
@@ -131,6 +128,9 @@ namespace TeamSprit_input
                 return;
             }
 
+            // ----------------------------------------------------------------
+            // -- データセット処理
+            // ----------------------------------------------------------------
             // ユーザ名
             setValues.userName   = userText.Text;
             // パスワード
@@ -170,14 +170,18 @@ namespace TeamSprit_input
         #region コンボボックス初期化
         private void InitDateComb()
         {
-            // ブラウザ選択用コンボボックス設定
+            // ----------------------------------------------------------------
+            // -- ブラウザ選択用コンボボックス設定
+            // ----------------------------------------------------------------
             {
                 browserComb.DataSource    = Settings.BrowserData();     // データテーブル表示する設定
                 browserComb.ValueMember   = "Code";                     // コード
                 browserComb.DisplayMember = "Name";                     // 表示名
                 browserComb.SelectedIndex = 0;                          // 初期値設定
             }
-            // 勤務場所選択用コンボボックス設定
+            // ----------------------------------------------------------------
+            // -- 勤務場所選択用コンボボックス設定
+            // ----------------------------------------------------------------
             {
                 // 勤務データ
                 DataTable dt = new DataTable();
@@ -213,12 +217,7 @@ namespace TeamSprit_input
         {
             bool errFlag = true;
 
-            if (textBox1.Text == "")
-            {
-                textBox1.BackColor = Color.Red;
-                errFlag &= false;
-            }
-
+            // 形式チェック
             switch (type)
             {
                 case CheckType.Date:
@@ -226,6 +225,13 @@ namespace TeamSprit_input
                     break;
                 default:
                     break;
+            }
+
+            // 入力チェック(両方とも空文字または入力あり以外はエラー)
+            if (textBox1.Text == "")
+            {
+                textBox1.BackColor = Color.Red;
+                errFlag &= false;
             }
 
             return errFlag;
@@ -242,22 +248,24 @@ namespace TeamSprit_input
         {
             bool errFlag = true;
 
-            if (textBox1.Text == "" ^ textBox2.Text == "")
-            {
-                textBox1.BackColor = Color.Red;
-                textBox2.BackColor = Color.Red;
-                errFlag &= false;
-            }
-
+            // 形式チェック
             switch (type)
-        {
+            {
                 case CheckType.Date:
                     errFlag &= TimeTextFormatCheng(textBox1) & TimeTextFormatCheng(textBox2);
                     break;
                 default:
                     break;
             }
-            
+
+            // 入力チェック(両方とも空文字または入力あり以外はエラー)
+            if (textBox1.Text == "" ^ textBox2.Text == "")
+            {
+                textBox1.BackColor = Color.Red;
+                textBox2.BackColor = Color.Red;
+                errFlag &= false;
+            }
+                        
             return errFlag;
         }
 

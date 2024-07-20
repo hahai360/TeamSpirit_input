@@ -168,7 +168,6 @@
             this.restEndTime2Text.Size = new System.Drawing.Size(65, 22);
             this.restEndTime2Text.TabIndex = 9;
             this.restEndTime2Text.Text = "00:00";
-            this.restEndTime2Text.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // label9
             // 
@@ -190,7 +189,6 @@
             this.restStartTime2Text.Size = new System.Drawing.Size(65, 22);
             this.restStartTime2Text.TabIndex = 8;
             this.restStartTime2Text.Text = "00:00";
-            this.restStartTime2Text.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // restEndTime1Text
             // 
@@ -202,7 +200,6 @@
             this.restEndTime1Text.Size = new System.Drawing.Size(65, 22);
             this.restEndTime1Text.TabIndex = 7;
             this.restEndTime1Text.Text = "00:00";
-            this.restEndTime1Text.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // label8
             // 
@@ -234,7 +231,6 @@
             this.restStartTime1Text.Size = new System.Drawing.Size(65, 22);
             this.restStartTime1Text.TabIndex = 6;
             this.restStartTime1Text.Text = "00:00";
-            this.restStartTime1Text.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // endTimeText
             // 
@@ -246,7 +242,6 @@
             this.endTimeText.Size = new System.Drawing.Size(65, 22);
             this.endTimeText.TabIndex = 5;
             this.endTimeText.Text = "00:00";
-            this.endTimeText.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // startTimeText
             // 
@@ -258,7 +253,6 @@
             this.startTimeText.Size = new System.Drawing.Size(65, 22);
             this.startTimeText.TabIndex = 4;
             this.startTimeText.Text = "00:00";
-            this.startTimeText.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // label7
             // 
