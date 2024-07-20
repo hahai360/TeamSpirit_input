@@ -344,7 +344,6 @@
             this.MinimizeBox = false;
             this.Name = "SettingForm";
             this.Text = "設定お願いしますm(_ _)m";
-            this.Load += new System.EventHandler(this.SettingForm_Load);
             this.authGroup.ResumeLayout(false);
             this.authGroup.PerformLayout();
             this.workGroup.ResumeLayout(false);
