@@ -162,7 +162,7 @@ namespace TeamSprit_input
             // 「次を使用してログイン Okta」をクリック
             driver.FindElement(By.Id("idp_section_buttons")).Click();
 
-            // アクサスの社員IDを入力する。
+            // ユーザIDを入力する。
             Thread.Sleep(5000);
             driver.FindElement(By.Id("input28")).SendKeys(_settings.userName);
             driver.FindElement(By.ClassName("button")).Click();
