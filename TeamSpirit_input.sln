@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamSprit_input", "TeamSprit_input.csproj", "{EA3CDB28-AFFD-4FCC-9BA8-0D344691103D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamSpirit_input", "TeamSpirit_input.csproj", "{EA3CDB28-AFFD-4FCC-9BA8-0D344691103D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
